@@ -1,0 +1,167 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Nunito", Arial, Helvetica, sans-serif;
+    background: #f9f5f0;
+    color: #4a3428;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 70px 20px 45px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #6b4226;
+}
+
+header p {
+    max-width: 600px;
+    margin: 15px auto 0;
+    color: #8a6a56;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+main {
+    width: min(1200px, calc(100% - 40px));
+    margin: 0 auto;
+    padding-bottom: 70px;
+}
+
+#cookies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.cookie-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 270px;
+
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ead8c7;
+    border-radius: 22px;
+
+    padding: 28px;
+
+    box-shadow: 0 12px 30px rgba(91, 62, 45, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+    overflow: hidden;
+}
+
+.cookie-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+    background: #f7e1c6;
+
+    top: -35px;
+    right: -25px;
+
+    opacity: 0.7;
+}
+
+.cookie-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(91, 62, 45, 0.14);
+}
+
+.cookie-card h2 {
+    position: relative;
+
+    margin: 0 0 16px;
+
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #5e3822;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    padding-right: 20px;
+}
+
+.cookie-card p {
+    position: relative;
+
+    margin: 0 0 20px;
+
+    line-height: 1.6;
+    color: #7b6354;
+
+    flex-grow: 1;
+}
+
+.cookie-card .price {
+    position: relative;
+
+    display: inline-block;
+    align-self: flex-start;
+
+    margin-top: auto;
+
+    padding: 9px 14px;
+
+    border-radius: 999px;
+
+    background: #6b4226;
+    color: white;
+
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+    #cookies {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding-top: 45px;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    main {
+        width: min(100% - 24px, 1200px);
+    }
+
+    #cookies {
+        grid-template-columns: 1fr;
+    }
+
+    .cookie-card {
+        min-height: 240px;
+        padding: 22px;
+    }
+
+    .cookie-card h2 {
+        white-space: normal;
+    }
+}

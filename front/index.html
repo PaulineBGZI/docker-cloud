@@ -3,10 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docker Cloud</title>
+    <title>Catalogue de cookies</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Docker Cloud</h1>
-    <p>Front opérationnel</p>
+    <header>
+        <h1>Catalogue de cookies</h1>
+        <p>
+            Vive les cookies 🍪
+        </p>
+    </header>
+
+    <main>
+        <div id="cookies"></div>
+    </main>
+
+    <script>
+        fetch("/api/")
+            .then(response => response.json())
+            .then(cookies => {
+                const container = document.getElementById("cookies");
+
+                cookies.forEach(cookie => {
+                    const element = document.createElement("article");
+                    element.className = "cookie-card";
+
+                    element.innerHTML = `
+                        <h2>${cookie.nom}</h2>
+                        <p>${cookie.description}</p>
+                        <span class="price">${cookie.prix.toFixed(2)} €</span>
+                    `;
+
+                    container.appendChild(element);
+                });
+            });
+    </script>
 </body>
 </html>
