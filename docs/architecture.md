@@ -81,3 +81,15 @@ Lors d’un `docker stop` ou d’un `docker compose down`, Docker envoie d’abo
 Le backend intercepte ce signal dans `app.py`, affiche un message puis termine le programme avec `sys.exit(0)`.
 
 Si un processus ne s’arrête pas correctement après le `SIGTERM`, Docker peut ensuite forcer son arrêt.
+
+## Schéma des communications
+
+```mermaid
+flowchart LR
+    U[Utilisateur] -->|Port 8080| P[Proxy Nginx]
+
+    P -->|/| F[Frontend Nginx]
+    P -->|/api/| B[Backend Flask]
+
+    F -->|Fetch /api/| P
+```

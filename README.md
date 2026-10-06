@@ -2,81 +2,72 @@
 
 Le thème choisi pour le projet est un **mini catalogue de cookies**.
 
-## Architecture
+Le projet permet d'afficher une liste de cookies récupérée depuis une API, le tout dans une architecture composée de plusieurs conteneurs Docker.
 
-Le projet est composé de trois services :
+## Services
 
-- `front` : interface web avec Nginx
-- `back` : API développée en Python avec Flask
-- `proxy` : serveur Nginx utilisé comme reverse proxy entre l’utilisateur, le frontend et le backend
+Le projet contient trois services :
 
-Schéma :
+- `front` : interface du catalogue
+- `back` : API contenant les données des cookies
+- `proxy` : point d'entrée de l'application
 
-## Technologies utilisées
+La documentation détaillée de l'architecture est disponible dans [`docs/architecture.md`](docs/architecture.md).
 
-### Frontend
+## Technologies
 
-- HTML
-- Nginx Alpine
-
-J'ai choisi Nginx Alpine car ça permet d'avoir une image légère.
-
-### Backend
-
+- HTML / CSS / JavaScript
+- Nginx
 - Python 3.12
 - Flask
-- Alpine Linux
+- Docker
+- Docker Compose
 
-Le backend expose une API HTTP utilisée pour fournir les données du catalogue de cookies.
+## Structure du projet
 
-### Proxy
-
-- Nginx Alpine
-
-Le proxy reçoit les requêtes HTTP et les redirige vers le frontend ou le backend selon l’URL utilisée.
-
-## Ressources
-
-| Service | Mémoire | CPU |
-|---|---:|---:|
-| Front | 128 MiB | 0.25 |
-| Back | 256 MiB | 0.50 |
-| Proxy | 128 MiB | 0.25 |
-
-Le backend possède plus de ressources car Python et Flask sont plus lourds que Nginx.
-
-Les ressources peuvent être surveillées avec :
-
-```bash
-docker stats
+```text
+docker-cloud/
+├── front/
+│   ├── Dockerfile
+│   ├── index.html
+│   └── style.css
+├── back/
+│   ├── Dockerfile
+│   ├── app.py
+│   └── requirements.txt
+├── web-server/
+│   ├── Dockerfile
+│   └── nginx.conf
+├── docs/
+│   └── architecture.md
+├── docker-compose.yml
+└── README.md
 ```
 
-## Lancement du projet
+## Lancement
 
-Construire et démarrer tous les services :
+Construire les images et démarrer les services :
 
 ```bash
 docker compose up --build
 ```
 
-Le projet est ensuite accessible sur :
+L'application est ensuite accessible sur :
 
 ```text
 http://localhost:8080
 ```
 
-L’API est accessible via le proxy sur :
+L'API peut également être consultée directement via le proxy :
 
 ```text
 http://localhost:8080/api/
 ```
 
-## Arrêt du projet
+## Arrêt
 
-Pour arrêter et supprimer les conteneurs créés par Docker Compose :
+Arrêter et supprimer les conteneurs créés par Docker Compose :
 
 ```bash
 docker compose down
 ```
-
-Docker envoie un signal `SIGTERM` aux processus principaux pour s’arrêter proprement.
