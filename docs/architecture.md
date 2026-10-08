@@ -16,7 +16,7 @@ Les requêtes vers `/api/` sont envoyées vers le backend.
 
 Le frontend utilise l’image `nginx:alpine`.
 
-J’ai choisi Nginx car le frontend est statique et contient uniquement du HTML et du CSS. Nginx suffit donc pour servir les fichiers au navigateur.
+J’ai choisi Nginx car le frontend est statique et contient uniquement du HTML et du CSS.
 
 La version Alpine permet d’utiliser une image plus légère.
 
