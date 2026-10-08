@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "nom": "Cookie chocolat",
+    "description": "Cookie moelleux avec des pépites de chocolat.",
+    "prix": 2.5
+  },
+  {
+    "id": 2,
+    "nom": "Cookie triple chocolat",
+    "description": "Cookie au chocolat avec plusieurs types de pépites.",
+    "prix": 3.0
+  },
+  {
+    "id": 3,
+    "nom": "Cookie caramel",
+    "description": "Cookie fondant avec des morceaux de caramel.",
+    "prix": 2.8
+  },
+  {
+    "id": 4,
+    "nom": "Cookie noisette",
+    "description": "Cookie moelleux avec des éclats de noisette.",
+    "prix": 2.9
+  },
+  {
+    "id": 5,
+    "nom": "Cookie chocolat blanc",
+    "description": "Cookie doux avec des morceaux de chocolat blanc.",
+    "prix": 2.9
+  },
+  {
+    "id": 6,
+    "nom": "Cookie spéculoos",
+    "description": "Cookie gourmand au goût de spéculoos.",
+    "prix": 3.1
+  },
+  {
+    "id": 7,
+    "nom": "Cookie pistache",
+    "description": "Cookie fondant avec une touche de pistache.",
+    "prix": 3.2
+  },
+  {
+    "id": 8,
+    "nom": "Cookie framboise",
+    "description": "Cookie sucré avec des morceaux de framboise.",
+    "prix": 3.0
+  },
+  {
+    "id": 9,
+    "nom": "Cookie coco",
+    "description": "Cookie moelleux parfumé à la noix de coco.",
+    "prix": 2.7
+  }
+]
