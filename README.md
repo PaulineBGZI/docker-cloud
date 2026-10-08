@@ -2,13 +2,13 @@
 
 Le thème choisi pour le projet est un **mini catalogue de cookies**.
 
-Le projet permet d'afficher une liste de cookies récupérée depuis une API, le tout dans une architecture composée de plusieurs conteneurs Docker.
+Le projet permet d'afficher un catalogue de cookies récupéré depuis une API, avec une page d'accueil, une page catalogue et une page de détail pour chaque cookie.
 
 ## Services
 
 Le projet contient trois services :
 
-- `front` : interface du catalogue
+- `front` : interface web du catalogue
 - `back` : API contenant les données des cookies
 - `proxy` : point d'entrée de l'application
 
@@ -30,19 +30,34 @@ docker-cloud/
 ├── front/
 │   ├── Dockerfile
 │   ├── index.html
-│   └── style.css
+│   ├── catalogue.html
+│   ├── cookie.html
+│   ├── style.css
+│   └── images/
+│       ├── chocolat.png
+│       ├── 3choco.png
+│       ├── caramel.png
+│       ├── noisette.png
+│       ├── choco-blanc.png
+│       ├── speculos.png
+│       ├── pistache.png
+│       ├── framboise.png
+│       └── coco.png
 ├── back/
 │   ├── Dockerfile
 │   ├── app.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── data/
+│       └── cookies.json
 ├── web-server/
 │   ├── Dockerfile
 │   └── nginx.conf
 ├── docs/
 │   └── architecture.md
+├── .env
+├── .gitignore
 ├── docker-compose.yml
 └── README.md
-```
 
 ## Lancement
 
