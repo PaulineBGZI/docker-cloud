@@ -1,20 +1,37 @@
 services:
   front:
+    # Construit l'image du frontend à partir du dossier front
     build: ./front
+
+    # Limite la mémoire utilisée par le conteneur à 128 Mo
     mem_limit: 128m
+
+    # Limite l'utilisation CPU à 0,25 cœur
     cpus: 0.25
 
   back:
+    # Construit l'image du backend à partir du dossier back
     build: ./back
+
+    # Le backend reçoit plus de mémoire car Python/Flask est plus lourd que Nginx
     mem_limit: 256m
+
+    # Limite l'utilisation CPU à 0,5 cœur
     cpus: 0.50
 
   proxy:
+    # Construit l'image du reverse proxy à partir du dossier web-server
     build: ./web-server
+
+    # Rend le port 80 du proxy accessible sur le port 8080 de la machine hôte
     ports:
       - "8080:80"
+
+    # Démarre le front et le back avant le proxy
     depends_on:
       - front
       - back
+
+    # Limite les ressources utilisées par le proxy
     mem_limit: 128m
     cpus: 0.25
