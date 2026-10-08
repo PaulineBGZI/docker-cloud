@@ -16,7 +16,7 @@ Les requêtes vers `/api/` sont envoyées vers le backend.
 
 Le frontend utilise l’image `nginx:alpine`.
 
-J’ai choisi Nginx car le frontend est statique et contient uniquement du HTML et du CSS.
+J’ai choisi Nginx car le frontend est statique et contient uniquement du HTML, du CSS et du JavaScript. Nginx suffit donc pour servir les fichiers au navigateur.
 
 La version Alpine permet d’utiliser une image plus légère.
 
@@ -34,6 +34,8 @@ Le fichier `requirements.txt` contient les dépendances Python nécessaires. Fla
 
 Le dossier de travail du conteneur est `/app`.
 
+Les données du catalogue sont stockées dans `data/cookies.json` afin de séparer les données de la logique applicative. Le backend charge ce fichier pour renvoyer les cookies via l’API.
+
 Le backend utilise le port `5000` dans son conteneur.
 
 La commande `CMD ["python", "app.py"]` lance l’application Flask au démarrage du conteneur.
@@ -50,7 +52,21 @@ Les requêtes vers `/` sont redirigées vers le frontend.
 
 Les requêtes vers `/api/` sont redirigées vers le backend.
 
-Le proxy utilise le port `80` dans son conteneur et expose le port `8080` sur la machine hôte.
+Le proxy utilise le port `80` dans son conteneur et expose le port défini dans le fichier `.env` sur la machine hôte.
+
+## Rôle des deux serveurs Nginx
+
+Le projet utilise deux conteneurs Nginx mais ils ont des rôles différents.
+
+Le Nginx du frontend sert uniquement les fichiers statiques de l’interface comme `index.html` et `style.css`.
+
+Le Nginx du proxy sert de point d’entrée unique pour l’application. Il reçoit les requêtes envoyées par le navigateur et décide vers quel service les rediriger.
+
+Une requête vers `/` est envoyée vers le Nginx du frontend qui renvoie ensuite les fichiers du site au navigateur.
+
+Une requête vers `/api/` est envoyée vers le backend Flask qui renvoie les données JSON. La réponse repasse ensuite par le proxy avant d’être renvoyée au navigateur.
+
+L’utilisateur ne communique donc jamais directement avec le frontend ou le backend : toutes les requêtes passent d’abord par le proxy.
 
 ## Docker Compose
 
@@ -58,7 +74,11 @@ Docker Compose permet de lancer et d’orchestrer les trois services du projet.
 
 Le service `proxy` dépend du `front` et du `back` grâce à `depends_on`.
 
-Seul le proxy expose un port vers la machine hôte avec `8080:80`. Le frontend et le backend restent accessibles uniquement depuis le réseau interne Docker.
+Les trois services communiquent à travers le réseau Docker personnalisé `cookie-network`.
+
+Seul le proxy expose un port vers la machine hôte. Le frontend et le backend restent accessibles uniquement depuis le réseau interne Docker.
+
+Le port du proxy ainsi que les limites de ressources sont définis dans le fichier `.env`.
 
 Des limites de ressources sont définies pour chaque service :
 
@@ -86,10 +106,18 @@ Si un processus ne s’arrête pas correctement après le `SIGTERM`, Docker peut
 
 ```mermaid
 flowchart LR
-    U[Utilisateur] -->|Port 8080| P[Proxy Nginx]
+    U[Utilisateur / Navigateur]
+    P[Proxy Nginx]
+    F[Frontend Nginx]
+    B[Backend Flask]
 
-    P -->|/| F[Frontend Nginx]
-    P -->|/api/| B[Backend Flask]
+    U -->|GET / - Port 8080| P
+    P -->|Redirige / vers front:80| F
+    F -->|Renvoie HTML / CSS / JS| P
+    P -->|Renvoie les fichiers au navigateur| U
 
-    F -->|Fetch /api/| P
+    U -->|GET /api/| P
+    P -->|Redirige /api/ vers back:5000| B
+    B -->|Renvoie les données JSON| P
+    P -->|Renvoie le JSON au navigateur| U
 ```
