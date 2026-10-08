@@ -58,6 +58,7 @@ docker-cloud/
 ├── .gitignore
 ├── docker-compose.yml
 └── README.md
+```
 
 ## Lancement
 
