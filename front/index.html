@@ -3,45 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Catalogue de cookies</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <header>
-        <h1>Catalogue de cookies</h1>
-        <p>
-            Vive les cookies 🍪
-        </p>
+    <header class="site-header">
+        <a href="index.html" class="logo">Catalogue de cookies</a>
+
+        <nav>
+            <a href="index.html" class="active">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+        </nav>
     </header>
 
     <main>
-        <div id="cookies"></div>
+        <section class="hero-home">
+            <div class="hero-content">
+
+                <h1>Des cookies pour toutes les envies</h1>
+
+                <p>
+                    Découvrez notre sélection de cookies gourmands,
+                    du classique chocolat aux recettes plus originales.
+                </p>
+
+                <a href="catalogue.html" class="primary-button">
+                    Voir le catalogue
+                </a>
+            </div>
+
+            <div class="hero-cookie">
+                🍪
+            </div>
+        </section>
+
+        <section class="home-section">
+            <div class="home-section-title">
+                <h2>Une petite vitrine gourmande</h2>
+            </div>
+
+            <div class="home-features">
+                <article class="feature-card">
+                    <span class="feature-icon">🍪</span>
+                    <h3>Plusieurs recettes</h3>
+                    <p>
+                        Une sélection de cookies aux goûts variés.
+                    </p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-icon">✨</span>
+                    <h3>Simple et gourmand</h3>
+                    <p>
+                        Chaque cookie possède sa description et son prix.
+                    </p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-icon">🤎</span>
+                    <h3>Nos préférés</h3>
+                    <p>
+                        Parcourez le catalogue et trouvez votre favori.
+                    </p>
+                </article>
+            </div>
+        </section>
     </main>
-
-    <script>
-        fetch("/api/")
-            .then(response => response.json())
-            .then(cookies => {
-                const container = document.getElementById("cookies");
-
-                cookies.forEach(cookie => {
-                    const element = document.createElement("article");
-                    element.className = "cookie-card";
-
-                    element.innerHTML = `
-                        <h2>${cookie.nom}</h2>
-                        <p>${cookie.description}</p>
-                        <span class="price">${cookie.prix.toFixed(2)} €</span>
-                    `;
-
-                    container.appendChild(element);
-                });
-            });
-    </script>
 </body>
 </html>

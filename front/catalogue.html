@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Catalogue de cookies</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a href="index.html" class="logo">Catalogue de cookies</a>
+
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html" class="active">Catalogue</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="catalogue-header">
+            <span class="catalogue-label">Nos cookies</span>
+
+            <h1>Catalogue de cookies</h1>
+
+            <p>
+                Découvrez toutes nos recettes et trouvez votre cookie préféré.
+            </p>
+        </section>
+
+        <section class="catalogue-main">
+            <div id="cookies"></div>
+        </section>
+    </main>
+
+    <script>
+        fetch("/api/")
+            .then(response => response.json())
+            .then(cookies => {
+                const container = document.getElementById("cookies");
+
+                cookies.forEach(cookie => {
+                    const link = document.createElement("a");
+
+                    link.className = "catalogue-card";
+                    link.href = `cookie.html?id=${cookie.id}`;
+
+                    link.innerHTML = `
+                        <div class="catalogue-image-wrapper">
+                            <img
+                                src="${cookie.image}"
+                                alt="${cookie.nom}"
+                                class="catalogue-image"
+                            >
+                        </div>
+
+                        <h2>${cookie.nom}</h2>
+                    `;
+
+                    container.appendChild(link);
+                });
+            });
+    </script>
+</body>
+</html>

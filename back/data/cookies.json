@@ -3,54 +3,63 @@
     "id": 1,
     "nom": "Cookie chocolat",
     "description": "Cookie moelleux avec des pépites de chocolat.",
-    "prix": 2.5
+    "prix": 2.5,
+    "image": "images/chocolat.png"
   },
   {
     "id": 2,
     "nom": "Cookie triple chocolat",
     "description": "Cookie au chocolat avec plusieurs types de pépites.",
-    "prix": 3.0
+    "prix": 3.0,
+    "image": "images/3choco.png"
   },
   {
     "id": 3,
     "nom": "Cookie caramel",
     "description": "Cookie fondant avec des morceaux de caramel.",
-    "prix": 2.8
+    "prix": 2.8,
+    "image": "images/caramel.png"
   },
   {
     "id": 4,
     "nom": "Cookie noisette",
     "description": "Cookie moelleux avec des éclats de noisette.",
-    "prix": 2.9
+    "prix": 2.9,
+    "image": "images/noisette.png"
   },
   {
     "id": 5,
     "nom": "Cookie chocolat blanc",
     "description": "Cookie doux avec des morceaux de chocolat blanc.",
-    "prix": 2.9
+    "prix": 2.9,
+    "image": "images/choco blanc.png"
   },
   {
     "id": 6,
     "nom": "Cookie spéculoos",
     "description": "Cookie gourmand au goût de spéculoos.",
-    "prix": 3.1
+    "prix": 3.1,
+    "image": "images/speculos.png"
   },
   {
     "id": 7,
     "nom": "Cookie pistache",
     "description": "Cookie fondant avec une touche de pistache.",
-    "prix": 3.2
+    "prix": 3.2,
+    "image": "images/pistache.png"
   },
   {
     "id": 8,
     "nom": "Cookie framboise",
     "description": "Cookie sucré avec des morceaux de framboise.",
-    "prix": 3.0
+    "prix": 3.0,
+    "image": "images/framboise.png"
   },
   {
     "id": 9,
     "nom": "Cookie coco",
     "description": "Cookie moelleux parfumé à la noix de coco.",
-    "prix": 2.7
+    "prix": 2.7,
+    "image": "images/coco.png"
   }
 ]

@@ -20,6 +20,21 @@ def get_cookies():
     return jsonify(load_cookies())
 
 
+@app.route("/<int:cookie_id>")
+def get_cookie(cookie_id):
+    cookies = load_cookies()
+
+    cookie = next(
+        (cookie for cookie in cookies if cookie["id"] == cookie_id),
+        None
+    )
+
+    if cookie is None:
+        return jsonify({"message": "Cookie introuvable"}), 404
+
+    return jsonify(cookie)
+
+
 def handle_sigterm(signum, frame):
     print("SIGTERM reçu, arrêt du backend")
     sys.exit(0)

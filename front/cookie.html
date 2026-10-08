@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Détail du cookie</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a href="index.html" class="logo">Catalogue de cookies</a>
+
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+        </nav>
+    </header>
+
+    <main class="detail-main">
+        <a href="catalogue.html" class="back-link">
+            Retour au catalogue
+        </a>
+
+        <section id="cookie-detail" class="cookie-detail">
+            <p>Chargement...</p>
+        </section>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const cookieId = params.get("id");
+
+        const container = document.getElementById("cookie-detail");
+
+        if (!cookieId) {
+            container.innerHTML = `
+                <div class="error-message">
+                    <h1>Cookie introuvable</h1>
+                    <p>Aucun identifiant n'a été fourni.</p>
+                </div>
+            `;
+        } else {
+            fetch(`/api/${cookieId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Cookie introuvable");
+                    }
+
+                    return response.json();
+                })
+                .then(cookie => {
+                    document.title = `${cookie.nom}`;
+
+                    container.innerHTML = `
+                        <div class="detail-visual">
+                            <img src="${cookie.image}" alt="${cookie.nom}">
+                        </div>
+
+                        <div class="detail-content">
+                            <span class="detail-label">Catalogue de cookies</span>
+
+                            <h1>${cookie.nom}</h1>
+
+                            <p class="detail-description">
+                                ${cookie.description}
+                            </p>
+
+                            <span class="detail-price">
+                                ${cookie.prix.toFixed(2)} €
+                            </span>
+                        </div>
+                    `;
+                })
+                .catch(() => {
+                    container.innerHTML = `
+                        <div class="error-message">
+                            <h1>Cookie introuvable</h1>
+                            <p>
+                                Le cookie demandé n'existe pas dans le catalogue.
+                            </p>
+                        </div>
+                    `;
+                });
+        }
+    </script>
+</body>
+</html>
