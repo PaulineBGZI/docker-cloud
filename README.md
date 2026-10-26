@@ -23,6 +23,14 @@ La documentation détaillée de l'architecture est disponible dans [`docs/archit
 - Docker
 - Docker Compose
 
+## Benchmark
+
+J'ai réalisé des tests de performance avec ApacheBench pour mesurer le temps de réponse des pages du site et de l'API.
+
+J'ai également utilisé Docker Stats pour vérifier la consommation CPU et RAM des conteneurs pendant les tests.
+
+Les résultats et les explications sont disponibles dans [`docs/benchmark.md`](docs/benchmark.md).
+
 ## Structure du projet
 
 ```text
@@ -53,7 +61,8 @@ docker-cloud/
 │   ├── Dockerfile
 │   └── nginx.conf
 ├── docs/
-│   └── architecture.md
+│   ├── architecture.md
+│   └── benchmark.md
 ├── .env
 ├── .gitignore
 ├── docker-compose.yml
