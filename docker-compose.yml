@@ -41,5 +41,21 @@ services:
     networks:
       - cookie-network
 
+  lint:
+    build: ./lint
+    volumes:
+      - ./back:/app:ro
+    profiles:
+      - tools
+
+  tests:
+    build: ./tests
+    depends_on:
+      - proxy
+    networks:
+      - cookie-network
+    profiles:
+      - tools
+
 networks:
   cookie-network:
