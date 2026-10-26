@@ -6,11 +6,15 @@ Le projet permet d'afficher un catalogue de cookies récupéré depuis une API, 
 
 ## Services
 
-Le projet contient trois services :
+Le projet contient cinq services :
 
 - `front` : interface web du catalogue
 - `back` : API contenant les données des cookies
 - `proxy` : point d'entrée de l'application
+- `lint` : vérification du code Python avec Ruff
+- `tests` : tests automatiques de l'API avec pytest
+
+Les services `lint` et `tests` sont lancés uniquement pour effectuer des vérifications.
 
 La documentation détaillée de l'architecture est disponible dans [`docs/architecture.md`](docs/architecture.md).
 
@@ -57,6 +61,11 @@ docker-cloud/
 │   ├── requirements.txt
 │   └── data/
 │       └── cookies.json
+├── lint/
+│   └── Dockerfile
+├── tests/
+│   ├── Dockerfile
+│   └── test_api.py
 ├── web-server/
 │   ├── Dockerfile
 │   └── nginx.conf
@@ -87,6 +96,21 @@ L'API peut également être consultée directement via le proxy :
 
 ```text
 http://localhost:8080/api/
+```
+
+## Vérifications
+
+Deux conteneurs permettent de vérifier le code et le fonctionnement de l'API.
+
+Pour analyser le code Python avec Ruff :
+
+```bash
+docker compose run --rm lint
+```
+
+Pour lancer les tests automatiques avec pytest :
+```bash
+docker compose run --rm tests
 ```
 
 ## Arrêt

@@ -1,10 +1,16 @@
 # Architecture du projet
 
-Le projet est composé de trois services Docker :
+Le projet est composé de cinq services Docker :
 
-- `front` : affiche l’interface du catalogue de cookies
+- `front` : affiche l'interface du catalogue de cookies
 - `back` : fournit les données des cookies via une API Flask
 - `proxy` : reçoit les requêtes HTTP et les redirige vers le frontend ou le backend
+- `lint` : vérifie le code Python avec Ruff
+- `tests` : teste le fonctionnement de l'API avec pytest
+
+Les trois premiers services permettent de faire fonctionner le site.
+
+Les services `lint` et `tests` sont utilisés uniquement pour les vérifications.
 
 L’utilisateur accède uniquement au proxy sur le port `8080`.
 
@@ -90,6 +96,67 @@ Des limites de ressources sont définies pour chaque service :
 
 Le backend possède plus de ressources car Python et Flask sont plus lourds que Nginx.
 
+## Conteneurs de vérification
+
+J'ai ajouté deux conteneurs supplémentaires pour vérifier le code et le fonctionnement de l'application.
+
+Ils utilisent le profil `tools` dans Docker Compose pour ne pas être démarrés automatiquement avec le site.
+
+### Lint
+
+Le conteneur `lint` utilise l'image `python:3.12-alpine`.
+
+J'ai choisi Ruff car il permet de détecter certaines erreurs dans le code Python sans avoir besoin de lancer l'application.
+
+Ruff est installé avec `pip` pendant la construction de l'image.
+
+Le dossier `back` est en lecture seule dans `/app` pour permettre à Ruff d'analyser les fichiers sans les modifier.
+
+L'`ENTRYPOINT` lance `ruff check --no-cache` et le `CMD` indique le dossier `.` à analyser.
+
+L'option `--no-cache` permet d'éviter la création de fichiers dans le dossier monté en lecture seule.
+
+Pour lancer la vérification :
+
+```bash
+docker compose run --rm lint
+```
+
+Le résultat obtenu est `All checks passed!`.
+
+### Tests
+
+Le conteneur `tests` utilise également l'image `python:3.12-alpine`.
+
+J'ai choisi pytest pour exécuter les tests automatiques et Requests pour envoyer des requêtes HTTP à l'API.
+
+Le fichier `test_api.py` contient deux tests :
+
+- Vérifier que l'API répond avec le code HTTP `200`.
+- Vérifier que l'API renvoie une réponse au format JSON.
+
+Les requêtes passent par le proxy Nginx comme quand un utilisateur consulte le site.
+
+Le `CMD` lance `pytest -v` au démarrage du conteneur.
+
+Pour lancer les tests :
+
+```bash
+docker compose run --rm tests
+```
+
+Les deux tests ont réussi.
+
+### Docker Compose
+
+Les services `lint` et `tests` utilisent le profil `tools`.
+
+Le conteneur `tests` dépend du service `proxy` grâce à `depends_on` et communique avec lui sur le réseau `cookie-network`.
+
+Le conteneur `lint` n'a pas besoin de communiquer avec les autres services puisqu'il analyse directement les fichiers Python.
+
+L'option `--rm` permet de supprimer les conteneurs temporaires après leur exécution.
+
 ## Cycle de vie et arrêt des conteneurs
 
 Un conteneur reste actif tant que son processus principal est en cours d’exécution.
@@ -105,19 +172,18 @@ Si un processus ne s’arrête pas correctement après le `SIGTERM`, Docker peut
 ## Schéma des communications
 
 ```mermaid
-flowchart LR
-    U[Utilisateur / Navigateur]
-    P[Proxy Nginx]
-    F[Frontend Nginx]
-    B[Backend Flask]
 
-    U -->|GET / - Port 8080| P
-    P -->|Redirige / vers front:80| F
-    F -->|Renvoie HTML / CSS / JS| P
-    P -->|Renvoie les fichiers au navigateur| U
+flowchart TB
+    U["Utilisateur / Navigateur"]
+    P["Proxy Nginx : 80"]
+    F["Frontend Nginx : 80"]
+    B["Backend Flask : 5000"]
+    L["Lint : Ruff"]
+    T["Tests : pytest"]
 
-    U -->|GET /api/| P
-    P -->|Redirige /api/ vers back:5000| B
-    B -->|Renvoie les données JSON| P
-    P -->|Renvoie le JSON au navigateur| U
+    U -->|"HTTP : localhost:8080"| P
+    P -->|"Pages HTML / CSS / JS"| F
+    P -->|"Requêtes /api/"| B
+    T -->|"Tests HTTP"| P
+    L -.->|"Analyse les fichiers Python"| B
 ```
